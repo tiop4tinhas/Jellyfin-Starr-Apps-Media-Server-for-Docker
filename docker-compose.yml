@@ -1,0 +1,125 @@
+version: "3"
+services:
+  gluetun:
+    image: qmcgaw/gluetun
+    container_name: gluetun
+    # line above must be uncommented to allow external containers to connect. See https://github.com/qdm12/gluetun/wiki/Connect-a-container-to-gluetun#external-container-to-gluetun
+    network_mode: bridge
+    cap_add:
+      - NET_ADMIN
+    devices:
+      - /dev/net/tun:/dev/net/tun
+    ports:
+      - 8888:8888/tcp # HTTP proxy
+      - 8388:8388/tcp # Shadowsocks
+      - 8388:8388/udp # Shadowsocks
+      - 8080:8080     # qBittorrent
+      - 6881:6881     # qBittorrent
+      - 6881:6881/udp # qBittorrent
+      - 8096:8096     #jellyfin
+      - 7359:7359/udp #jellyfin #optional
+      - 1900:1900/udp #jellyfin #optional
+      - 7878:7878     #radarr
+      - 6767:6767     #sonarr
+      - 8989:8989     #bazarr
+      - 9117:9117     #jackett
+      - 9696:9696     #prowlarr
+    volumes:
+      - ${CONFIG_DIR:?err}/gluetun:/gluetun
+    env_file:
+      - secrets.env
+    environment:
+      # See https://github.com/qdm12/gluetun/wiki
+      - VPN_SERVICE_PROVIDER=nordvpn
+      - VPN_TYPE=openvpn
+      # OpenVPN:
+      # - OPENVPN_USER # Value is being supplied through env_file
+      # - OPENVPN_PASSWORD # Value is being supplied through env_file
+      - SERVER_REGIONS=Canada
+      # Wireguard:
+      # - WIREGUARD_PRIVATE_KEY=wOEI9rqqbDwnN8/Bpp22sVz48T71vJ4fYmFWujulwUU=
+      # - WIREGUARD_ADDRESSES=10.64.222.21/32
+      # Timezone for accurate log times
+    restart: always
+  jellyfin:
+    image: lscr.io/linuxserver/jellyfin
+    container_name: jellyfin
+    network_mode: "service:gluetun"
+    environment:
+      - PUID=1000
+      - PGID=1000
+    volumes:
+      - ${MEDIA_DIR:?err}:${MEDIA_DIR:?err}
+      - ${TORRENT_DIR:?err}/incomplete:${TORRENT_DIR:?err}/incomplete
+      - ${CONFIG_DIR:?err}/jellyfin:/config
+    restart: unless-stopped
+  radarr:
+    container_name: radarr
+    image: cr.hotio.dev/hotio/radarr:latest
+    restart: unless-stopped
+    logging:
+      driver: json-file
+    network_mode: "service:gluetun"
+    environment:
+      - PUID=1000
+      - PGID=1000
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${CONFIG_DIR:?err}/radarr:/config
+      - /data:/data 
+  sonarr:
+    container_name: sonarr
+    image: cr.hotio.dev/hotio/sonarr:latest
+    restart: unless-stopped
+    logging:
+      driver: json-file
+    network_mode: "service:gluetun"
+    environment:
+      - PUID=1000
+      - PGID=1000
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${CONFIG_DIR:?err}/sonarr:/config
+      - /data:/data 
+  bazarr:
+    container_name: bazarr
+    image: cr.hotio.dev/hotio/bazarr:latest
+    restart: unless-stopped
+    logging:
+      driver: json-file
+    network_mode: "service:gluetun"
+    environment:
+      - PUID=1000
+      - PGID=1000
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${CONFIG_DIR:?err}/bazarr:/config
+      - ${MEDIA_DIR:?err}:${MEDIA_DIR:?err}
+  qbittorrent:
+    image: lscr.io/linuxserver/qbittorrent:latest
+    container_name: qbittorrent
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - WEBUI_PORT=8080
+    volumes:
+      - ${CONFIG_DIR:?err}/qbittorrent:/config
+      - ${TORRENT_DIR:?errTORRENTNFIG_DIR:?err}
+    restart: unless-stopped
+    network_mode: "service:gluetun"
+  prowlarr:
+    image: lscr.io/linuxserver/prowlarr:develop
+    container_name: prowlarr
+    network_mode: "service:gluetun"
+    environment:
+      - PUID=1000
+      - PGID=1000
+    volumes:
+      - ${CONFIG_DIR:?err}/prowlarr:/config
+    restart: unless-stopped
+  recyclarr:
+    image: ghcr.io/recyclarr/recyclarr
+    container_name: recyclarr
+    networks: "service:gluetun"
+    volumes:
+      - ${CONFIG_DIR:?err}/recyclarr:/config

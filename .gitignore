@@ -1,0 +1,2 @@
+# Ignores the file containing sensitive variables for OpenVPN credentials
+secrets.env
