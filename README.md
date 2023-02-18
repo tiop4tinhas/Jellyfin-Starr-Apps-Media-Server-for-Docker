@@ -1,4 +1,4 @@
-# Jellyfin/Starr Apps Media Server Stack for Docker
+# Jellyfin/Starr Apps Media Server for Docker
 
 A beginner-friendly ready-to-use template for setting up an automated media management and streaming solution for your home.
 
