@@ -3,7 +3,7 @@
 ![Jellyfin](https://i.imgur.com/BCfda0J.png)
 ## Description
 
-This repository provides a beginner-friendly ready-to-use template following the guidelines defined by [TRaSH Guides](trash-guides.info). All credit goes to the people maintaining the [project](https://github.com/TRaSH-/Guides). If you enjoy their work, [go buy them a cup of coffee](https://github.com/sponsors/TRaSH-)!
+This repository provides a beginner-friendly ready-to-use template following the guidelines defined by [TRaSH Guides](trash-guides.info). **All credit goes to the people maintaining the [project](https://github.com/TRaSH-/Guides). If you enjoy their work, [go buy them a cup of coffee](https://github.com/sponsors/TRaSH-)!**
 
 I've created this repository to help anyone looking for a quick start in configuring their own media server solution and to version control my personal setup.
 
@@ -28,7 +28,8 @@ I'm making use of **Jellyfin** for media streaming as it is open-source and pret
 
 * Begin by creating the directories (preferrably with the same names) and granting them the correct permissions using the chown/chmod commands found [here](https://trash-guides.info/Hardlinks/How-to-setup-for/Docker/).
 * Clone this repository on your server.
-* In case you don't need to have your traffic routed through a VPN, read [this section](###without-a-vpn) on how you can omit it from the configuration.
+* In case you don't need to have your traffic routed through a VPN, go now to the following section to learn how you can omit it from the configuration.
+* Update both .env files according to your preferred settings. If using Gluetun, don't forget to rename the .env file to `gluetun.env`. 
 * Navigate to the repository's folder on a terminal and run `docker compose up -d` to have Docker create all the containers in this stack.
 * You should now be able to navigate to each of your containers on your browser after they are up on `http://server-ip:port` to continue setting them up. Follow the instructions [here](https://trash-guides.info/Hardlinks/Examples/) for Radarr, Sonarr and qBittorrent.
 
