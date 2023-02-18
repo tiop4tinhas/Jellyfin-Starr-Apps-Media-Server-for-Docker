@@ -1,7 +1,6 @@
 # Jellyfin/Starr Apps Media Server for Docker
 
-A beginner-friendly ready-to-use template for setting up an automated media management and streaming solution for your home.
-
+![Jellyfin](https://i.imgur.com/BCfda0J.png)
 ## Description
 
 This repository provides a beginner-friendly ready-to-use template following the guidelines defined by [TRaSH Guides](trash-guides.info). All credit goes to the people maintaining the [project](https://github.com/TRaSH-/Guides). If you enjoy their work, [go buy them a cup of coffee](https://github.com/sponsors/TRaSH-)!
