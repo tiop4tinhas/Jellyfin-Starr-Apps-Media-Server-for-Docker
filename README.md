@@ -7,7 +7,7 @@ This repository provides a beginner-friendly ready-to-use template following the
 
 I've created this repository to help anyone looking for a quick start in configuring their own media server solution and to version control my personal setup.
 
-I'm making use of **Jellyfin** for media streaming as it is open-source and pretty much ubiquitous in app stores. For downloading torrents, I'm using **qBittorrent**'s official Docker image. And for managing and choosing what I want to watch in an user-friendly UI, I'm using the **Starr apps**. Here is a quick breakdown of what each service in this stack does:
+I use **Jellyfin** for media streaming as it is open-source and pretty much ubiquitous in app stores. For downloading torrents, I use **qBittorrent**'s official Docker image. And for managing and choosing what I want to watch in an user-friendly UI, I use the **Starr apps**. Here is a quick breakdown of what each service in this stack does:
 
 * [Jellyfin](https://jellyfin.org/): Make your media into a nice library and stream it to your devices where you want to watch them. The client can be found in most app stores and works on browsers.
 * [Radarr](https://radarr.video/): Monitor and grab movies you want to add to your collection, which it then sends to your torrent client
