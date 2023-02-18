@@ -22,7 +22,6 @@ services:
       - 7878:7878     #radarr
       - 6767:6767     #sonarr
       - 8989:8989     #bazarr
-      - 9117:9117     #jackett
       - 9696:9696     #prowlarr
     volumes:
       - ${CONFIG_DIR:?err}/gluetun:/gluetun
@@ -33,6 +32,9 @@ services:
     image: lscr.io/linuxserver/jellyfin
     container_name: jellyfin
     network_mode: "service:gluetun"
+    environment:
+      - PUID=${PUID:?err}
+      - PGID=${PGID:?err}
     volumes:
       - ${MEDIA_DIR:?err}:${MEDIA_DIR:?err}
       - ${TORRENT_DIR:?err}/incomplete:${TORRENT_DIR:?err}/incomplete
@@ -45,6 +47,9 @@ services:
     logging:
       driver: json-file
     network_mode: "service:gluetun"
+    environment:
+      - PUID=${PUID:?err}
+      - PGID=${PGID:?err}
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${CONFIG_DIR:?err}/radarr:/config
@@ -56,6 +61,9 @@ services:
     logging:
       driver: json-file
     network_mode: "service:gluetun"
+    environment:
+      - PUID=${PUID:?err}
+      - PGID=${PGID:?err}
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${CONFIG_DIR:?err}/sonarr:/config
@@ -67,6 +75,9 @@ services:
     logging:
       driver: json-file
     network_mode: "service:gluetun"
+    environment:
+      - PUID=${PUID:?err}
+      - PGID=${PGID:?err}
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${CONFIG_DIR:?err}/bazarr:/config
@@ -76,15 +87,20 @@ services:
     container_name: qbittorrent
     environment:
       - WEBUI_PORT=8080
+      - PUID=${PUID:?err}
+      - PGID=${PGID:?err}
     volumes:
       - ${CONFIG_DIR:?err}/qbittorrent:/config
-      - ${TORRENT_DIR:?errTORRENTNFIG_DIR:?err}
+      - ${TORRENT_DIR:?err}:${TORRENT_DIR:?err}:rw
     restart: unless-stopped
     network_mode: "service:gluetun"
   prowlarr:
     image: lscr.io/linuxserver/prowlarr:develop
     container_name: prowlarr
     network_mode: "service:gluetun"
+    environment:
+      - PUID=${PUID:?err}
+      - PGID=${PGID:?err}
     volumes:
       - ${CONFIG_DIR:?err}/prowlarr:/config
     restart: unless-stopped
